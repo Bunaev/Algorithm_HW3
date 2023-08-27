@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class HashMap<K, V> implements Iterable<HashMap.Entity> {
@@ -27,9 +28,11 @@ public class HashMap<K, V> implements Iterable<HashMap.Entity> {
          * @return
          */
         int index;
-        Entity entity;
+        ArrayList<Entity> entity = new ArrayList<>();
+        int entityIndex;
         public HashMapIterator(){
             this.index = 0;
+            this.entityIndex = -1;
         }
         @Override
         public boolean hasNext() {
@@ -37,18 +40,21 @@ public class HashMap<K, V> implements Iterable<HashMap.Entity> {
                     buckets[index] != null && buckets[index].head == null){
                 index+=1;
             }
-            return index < buckets.length-1;
+            return index < buckets.length-1 || entityIndex < entity.size()-1;
         }
 
         @Override
         public Entity next() {
-            Bucket.Node node = buckets[index].head;
-            while (node != null){
-                entity = node.value;
-                node = node.next;
-                index+=1;
+            if (buckets[index] != null || index != buckets.length-1) {
+                Bucket.Node node = buckets[index].head;
+                while (node != null) {
+                    entity.add(node.value);
+                    node = node.next;
+                }
+                index += 1;
             }
-            return entity;
+            entityIndex+=1;
+            return entity.get(entityIndex);
         }
     }
 
