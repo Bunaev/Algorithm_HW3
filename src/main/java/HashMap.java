@@ -29,7 +29,7 @@ public class HashMap<K, V> implements Iterable<HashMap.Entity> {
         int index;
         Entity entity;
         public HashMapIterator(){
-            this.index = 23;
+            this.index = 0;
         }
         @Override
         public boolean hasNext() {
@@ -42,16 +42,13 @@ public class HashMap<K, V> implements Iterable<HashMap.Entity> {
 
         @Override
         public Entity next() {
-                Bucket.Node node = buckets[index].head;
-                while (node != null){
-                    entity = node.value;
-                    node = node.next;
-                    index+=1;
-                    if (node != null) {
-                        return node.value;
-                    }
-                }
-                return entity;
+            Bucket.Node node = buckets[index].head;
+            while (node != null){
+                entity = node.value;
+                node = node.next;
+                index+=1;
+            }
+            return entity;
         }
     }
 
